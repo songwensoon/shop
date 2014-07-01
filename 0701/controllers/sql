@@ -1,0 +1,61 @@
+CREATE TABLE `shop_member` (
+  `user_id` int(11) unsigned NOT NULL COMMENT '用户ID',
+  `true_name` varchar(50) DEFAULT NULL COMMENT '真实姓名',
+  `telephone` varchar(50) DEFAULT NULL COMMENT '联系电话',
+  `mobile` varchar(20) DEFAULT NULL COMMENT '手机',
+  `area` varchar(255) DEFAULT NULL COMMENT '地区',
+  `contact_addr` varchar(250) DEFAULT NULL COMMENT '联系地址',
+  `qq` varchar(15) DEFAULT NULL COMMENT 'QQ',
+  `msn` varchar(250) DEFAULT NULL COMMENT 'MSN',
+  `sex` tinyint(1) NOT NULL DEFAULT '1' COMMENT '性别1男2女',
+  `birthday` date DEFAULT NULL COMMENT '生日',
+  `group_id` int(11) DEFAULT NULL COMMENT '分组',
+  `exp` int(11) NOT NULL DEFAULT '0' COMMENT '经验值',
+  `point` int(11) NOT NULL DEFAULT '0' COMMENT '积分',
+  `message_ids` text COMMENT '消息ID',
+  `time` datetime NOT NULL COMMENT '注册日期时间',
+  `zip` varchar(10) DEFAULT NULL COMMENT '邮政编码',
+  `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '用户状态 1正常状态 2 删除至回收站 3锁定',
+  `prop` text COMMENT '用户拥有的工具',
+  `balance` decimal(15,2) NOT NULL DEFAULT '0.00' COMMENT '用户余额',
+  `last_login` datetime DEFAULT NULL COMMENT '最后一次登录时间',
+  `custom` varchar(255) DEFAULT NULL COMMENT '用户习惯方式,配送和支付方式等信息',
+  `membership_time` int(12) DEFAULT NULL,
+  PRIMARY KEY (`user_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='用户信息表';
+
+CREATE TABLE `shop_membership_fees` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) unsigned NOT NULL COMMENT '用户id',
+  `fees_no` varchar(20) NOT NULL COMMENT '缴费单号',
+  `account` decimal(15,2) NOT NULL DEFAULT '0.00' COMMENT '缴费金额',
+  `time` datetime NOT NULL COMMENT '时间',
+  `payment_name` varchar(80) NOT NULL COMMENT '缴费方式名称',
+  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '缴费状态 0:未成功 1:缴费成功',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='会员缴费表';
+
+-- ----------------------------
+-- Records 
+-- ----------------------------
+INSERT INTO `shop_membership_fees` VALUES ('1', '1', '20140701154707641543', '1000.00', '2014-07-01 15:47:07', '支付宝', '0');
+INSERT INTO `shop_membership_fees` VALUES ('2', '1', '20140701154818891839', '1000.00', '2014-07-01 15:48:18', '支付宝', '1');
+INSERT INTO `shop_membership_fees` VALUES ('3', '1', '20140701162300510037', '1000.00', '2014-07-01 16:23:00', '支付宝', '0');
+INSERT INTO `shop_membership_fees` VALUES ('4', '1', '20140701162313972781', '1000.00', '2014-07-01 16:23:13', '支付宝', '1');
+CREATE TABLE `shop_user_group` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '用户组ID',
+  `group_name` varchar(20) NOT NULL COMMENT '组名',
+  `discount` decimal(15,2) NOT NULL DEFAULT '100.00' COMMENT '折扣率',
+  `minexp` int(11) DEFAULT NULL COMMENT '最小经验',
+  `maxexp` int(11) DEFAULT NULL COMMENT '最大经验',
+  `message_ids` varchar(255) DEFAULT NULL COMMENT '消息ID',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='用户组';
+
+-- ----------------------------
+-- Records 
+-- ----------------------------
+INSERT INTO `shop_user_group` VALUES ('1', '普通客户', '100.00', '0', '1000', null);
+INSERT INTO `shop_user_group` VALUES ('2', '会员', '100.00', '1000', '2000', null);
+INSERT INTO `shop_user_group` VALUES ('3', '主管', '100.00', '2000', '3000', null);
+INSERT INTO `shop_user_group` VALUES ('4', '经理', '100.00', '3000', '4000', null);
