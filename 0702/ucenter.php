@@ -22,11 +22,49 @@ class Ucenter extends IController
         $this->initPayment();
         $this->redirect('index');
     }
+	//检查推荐人是否存在
+	function check_recommended($recommended=null)
+	{
+		//php校验$name!=null , ajax校验 $name == null
+		$o_recommended = ($recommended==null) ? IReq::get('recommended','post') : $recommended;
+		$user_id = ISafe::get('user_id');
+		$user_id = intval($user_id);
+		if($o_recommended)
+		{
+			$where = 'username = "'.$o_recommended.'" and group_id=2 and id != '.$user_id;
+		}
+		$userObj = new IModel('user');
+		$userRow = $userObj->getObj($where);
+
+		if(!empty($userRow))
+		{
+			if($recommended != null)
+			{
+				return true;
+			}
+			else
+			{
+				echo '1';
+			}
+		}
+		else
+		{
+			if($recommended != null)
+			{
+				return false;
+			}
+			else
+			{
+				echo '-1';
+			}
+			
+		}
+	}
 	//检查身份证号码唯一性
 	function check_idcard($id_card = null)
 	{
 		//php校验$name!=null , ajax校验 $name == null
-		$id_card = ($id_card==null) ? IReq::get('id_card','post') : $id_card;
+		$o_id_card = ($id_card==null) ? IReq::get('id_card','post') : $id_card;
 		$user_id = ISafe::get('user_id');
 		$user_id = intval($user_id);
 
@@ -34,11 +72,11 @@ class Ucenter extends IController
 		$memberObj = new IModel('member');
 		if($user_id)
 		{
-			$where = 'id_card = "'.$id_card.'" and user_id != '.$user_id;
+			$where = 'id_card = "'.$o_id_card.'" and user_id != '.$user_id;
 		}
 		else
 		{
-			$where = 'id_card = "'.$id_card.'"';
+			$where = 'id_card = "'.$o_id_card.'"';
 		}
 
 		$memberRow = $memberObj->getObj($where);
@@ -139,25 +177,6 @@ class Ucenter extends IController
         $items[0]['name'] = '货到付款';
         $this->payments = $items;
     }
-	/**
-     * @brief 会员申请
-     * @return String
-     */
-	public function apply_member()
-	{
-		$user_id = ISafe::get('user_id');
-		$user_id = intval($user_id);
-
-
-		$user_groupObj = new IModel('user_group');
-
-		$where = 'id = 2';
-
-		$user_groupRow = $user_groupObj->getObj($where);
-		$this->fees = $user_groupRow['fees'];
-		$this->redirect('apply_member',false);
-	}
-	
     /**
      * @brief 订单详情
      * @return String
@@ -714,11 +733,30 @@ class Ucenter extends IController
     	$areaStr  = ','.$province.','.$city.','.$area.',';
 		//身份证
 		$id_card = IFilter::act( IReq::get('id_card','post') ,'string' );
+		$recommended = IFilter::act( IReq::get('recommended','post') ,'string' );
 		//检查管理员name唯一性
 		$isPass = $this->check_idcard($id_card);
-		if($isPass == true)
+		$message = '';
+		if($isPass == false)
 		{
 			$message = $id_card.'身份证号码已经存在,请更改其他号码';
+		}
+		if(!empty($recommended)){
+			$u_recommended = ISafe::get('recommended');
+			if(!empty($u_recommended))
+			{
+				$message .= '推荐人已选择不能修改！';
+			}else
+			{
+				$isPass = $this->check_recommended($recommended);
+				if($isPass == false)
+				{
+					$message .= $recommended.'推荐人不存在或者不是会员用户,请和推荐人确认';
+				}
+			}
+		}
+		if(!empty($message))
+		{
 			$userObj       = new IModel('user');
 			$where         = 'id = '.$user_id;
 			$this->userRow = $userObj->getObj($where);
@@ -751,12 +789,21 @@ class Ucenter extends IController
 			'id_card'	   => $id_card,
     		'area'         => $areaStr,
     	);
-
+		if(!empty($recommended))
+		{
+			$dataArray['recommended'] = $recommended;
+			$dataArray['point'] = 50;
+		}
     	$memberObj->setData($dataArray);
     	$memberObj->update($where);
+		if(!empty($recommended))
+		{
+			//进行推荐员工积分处理和员工升级处理
+			Payment::updateIntegral($recommended);
+		}
     	$this->info();
     }
-
+	
     //[账户余额] 展示[单页]
     function withdraw()
     {
