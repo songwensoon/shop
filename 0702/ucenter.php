@@ -22,6 +22,15 @@ class Ucenter extends IController
         $this->initPayment();
         $this->redirect('index');
     }
+
+	public function apply_member()
+	{
+		$groupObj = new IModel('user_group');
+		$where = 'id = 2';
+		$groupRow = $groupObj->getObj($where);
+		$this->fees = $groupRow['fees'];
+		$this->redirect('apply_member',false);
+	}
 	//检查推荐人是否存在
 	function check_recommended($recommended=null)
 	{
