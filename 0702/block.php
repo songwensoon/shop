@@ -478,7 +478,7 @@ class Block extends IController
 	    	}
 	    	$userIds = join(',',$tempArray);
     	}
-
+	
     	die('<script type="text/javascript">parent.searchUserCallback("'.$userIds.'");</script>');
     }
 }
