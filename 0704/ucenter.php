@@ -25,6 +25,29 @@ class Ucenter extends IController
 
 	public function apply_member()
 	{
+		$result = CheckRights::checkUserInfo();
+		if(!$result){
+			$user_id = ISafe::get('user_id');
+			$message = '请完善个人资料后再申请会员！';
+			$userObj       = new IModel('user');
+			$where         = 'id = '.$user_id;
+			$this->userRow = $userObj->getObj($where);
+
+			$memberObj       = new IModel('member');
+			$where           = 'user_id = '.$user_id;
+			$this->memberRow = $memberObj->getObj($where);
+
+			$this->userGroupRow = array();
+			if(isset($this->memberRow['group_id']) && $this->memberRow['group_id'])
+			{
+				$userGroupObj       = new IModel('user_group');
+				$where              = 'id = '.$this->memberRow['group_id'];
+				$this->userGroupRow = $userGroupObj->getObj($where);
+			}
+			$this->redirect('info',false);
+			Util::showMessage($message);
+			return;
+		}
 		$siteConfigObj = new Config("site_config");
 		$site_config   = $siteConfigObj->getInfo();
 		$member_fee = $site_config['fees'];
@@ -76,7 +99,6 @@ class Ucenter extends IController
 		$o_id_card = ($id_card==null) ? IReq::get('id_card','post') : $id_card;
 		$user_id = ISafe::get('user_id');
 		$user_id = intval($user_id);
-
 
 		$memberObj = new IModel('member');
 		if($user_id)
@@ -798,14 +820,24 @@ class Ucenter extends IController
 			'id_card'	   => $id_card,
     		'area'         => $areaStr,
     	);
+		//完善资料积分
+		
+		$result = CheckRights::checkUserInfo();
+		if(!$result){
+			//获取会员注册积分
+			$siteConfigObj = new Config("site_config");
+			$site_config   = $siteConfigObj->getInfo();
+			$point = $site_config['point'];
+			$dataArray['point'] = $point;
+		}
 		if(!empty($recommended))
 		{
 			$dataArray['recommended'] = $recommended;
-			$dataArray['point'] = 50;
 		}
     	$memberObj->setData($dataArray);
     	$memberObj->update($where);
-		if(!empty($recommended))
+		//如果是会员并且有推荐人则发放积分给推荐人
+		if(!empty($recommended)&&($this->memberRow['group_id']==2))
 		{
 			//进行推荐员工积分处理和员工升级处理
 			Payment::updateIntegral($recommended);
