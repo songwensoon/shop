@@ -1,0 +1,49 @@
+<div class="main f_r">
+	<div class="uc_title m_10">
+		<label class="current"><span>个人积分</span></label>
+	</div>
+	<div class="box m_10">
+		<p class="text">您当前的积分：<b class="brown">{$this->memberRow['point']}</b>分</p>
+	</div>
+	<div class="form_content m_10">
+		<form action='{url:/ucenter/integral}' method='post' name='point_history'>
+			<div class="uc_title2 m_10">
+				<span class="f_r">查询时间：
+					<select name='history_time'>
+						<option value="3">3个月之外积分记录</option>
+						<option value="default" selected=selected>近3个月之内积分记录</option>
+					</select>
+					<input class="sbtn" type="submit" value="查询" />
+				</span>
+				<strong>积分明细查询</strong>
+			</div>
+		</form>
+		<div class="cont">
+			<table class="list_table" width="100%" cellpadding="0" cellspacing="0">
+			<col width="200px" />
+			<col width="200px" />
+			<col />
+			<thead><tr><th>积分日期</th><th>积分</th><th>说明</th></tr></thead>
+			<tbody>
+				{set:$user_id = $this->user['user_id']}
+				{set:$page= (isset($_GET['page'])&&(intval($_GET['page'])>0))?intval($_GET['page']):1;}
+                {query: name=point_log where=user_id eq $user_id and $this->c_datetime id=$point_log page=$page}
+				<tr>
+					<td>{$item['datetime']}</td><td>{$item['value']}分</td><td><span class="blue">{$item['intro']}</span></td>
+				</tr>
+                {/query}
+                <tr><td colspan='3'>{$point_log->getPageBar()}</td></tr>
+			</tbody>
+		</table>
+		</div>
+	</div>
+	
+</div>
+
+<script type='text/javascript'>
+	var FromObj = new Form('point_history');
+	FromObj.init
+	({
+		'history_time':'{$this->historyTime}'
+	});
+</script>
