@@ -111,6 +111,7 @@ class Simple extends IController
 	    		$memberArray = array(
 	    			'user_id' => $user_id,
 	    			'time'    => ITime::getDateTime(),
+					'group_id'=>1
 	    		);
 	    		$memberObj = new IModel('member');
 	    		$memberObj->setData($memberArray);
