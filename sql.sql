@@ -1,0 +1,25 @@
+INSERT INTO `shop_category` VALUES ('16', '小型家电', '4', '0', '1', '0', '', '', '');
+INSERT INTO `shop_category` VALUES ('3', '品质生活用品', '0', '0', '1', '0', '', '', '');
+INSERT INTO `shop_category` VALUES ('4', '品质家用电器', '0', '0', '1', '0', '', '', '');
+INSERT INTO `shop_category` VALUES ('5', '品质保健按摩用品', '0', '0', '1', '0', '', '', '');
+INSERT INTO `shop_category` VALUES ('17', '护理电器', '4', '0', '1', '0', '', '', '');
+INSERT INTO `shop_category` VALUES ('6', '品质家饰装修', '0', '0', '1', '0', '', '', '');
+INSERT INTO `shop_category` VALUES ('7', '品质进口代购产品', '0', '0', '1', '0', '', '', '');
+INSERT INTO `shop_category` VALUES ('8', '品质书籍cd订购', '0', '0', '1', '0', '', '', '');
+INSERT INTO `shop_category` VALUES ('9', '洗浴清洁用品', '3', '0', '1', '0', '', '', '');
+INSERT INTO `shop_category` VALUES ('10', '床上用品', '3', '0', '1', '0', '', '', '');
+INSERT INTO `shop_category` VALUES ('11', '厨房用品', '3', '0', '1', '0', '', '', '');
+INSERT INTO `shop_category` VALUES ('12', '儿童读物', '8', '0', '1', '0', '', '', '');
+INSERT INTO `shop_category` VALUES ('13', '保健养生', '8', '0', '1', '0', '', '', '');
+INSERT INTO `shop_category` VALUES ('14', '心灵读物', '8', '0', '1', '0', '', '', '');
+INSERT INTO `shop_category` VALUES ('15', '课程书籍', '8', '0', '1', '0', '', '', '');
+INSERT INTO `shop_category` VALUES ('18', '健康营养保健品', '5', '0', '1', '0', '', '', '');
+INSERT INTO `shop_category` VALUES ('19', '按摩器械', '5', '0', '1', '0', '', '', '');
+INSERT INTO `shop_category` VALUES ('20', '灯饰', '6', '0', '1', '0', '', '', '');
+INSERT INTO `shop_category` VALUES ('21', '装饰品', '6', '0', '1', '0', '', '', '');
+INSERT INTO `shop_category` VALUES ('22', '装修材料', '6', '0', '1', '0', '', '', '');
+INSERT INTO `shop_category` VALUES ('23', '婴儿用品', '7', '0', '1', '0', '', '', '');
+INSERT INTO `shop_category` VALUES ('24', '奢侈品', '7', '0', '1', '0', '', '', '');
+INSERT INTO `shop_category` VALUES ('25', '工艺品', '7', '0', '1', '0', '', '', '');
+INSERT INTO `shop_category` VALUES ('26', '酒', '7', '0', '1', '0', '', '', '');
+
