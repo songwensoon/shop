@@ -1,0 +1,336 @@
+{set:
+	$site_config=new Config('site_config');
+	$seo_data=array();
+	$seo_data['title']=$site_config->name;
+	$seo_data['title'].=$site_config->index_seo_title;
+	$seo_data['keywords']=$site_config->index_seo_keywords;
+	$seo_data['description']=$site_config->index_seo_description;
+	seo::set($seo_data);
+}
+
+<link rel="stylesheet" type="text/css" href="{theme:javascript/jquery.bxSlider/jquery.bxslider.css}" />
+<script type="text/javascript" src="{theme:javascript/jquery.bxSlider/jquery.bxSlider.min.js}"></script>
+
+<div class="wrapper clearfix">
+	<div class="sidebar f_r" style="display:none;">
+
+		<!--cms新闻展示-->
+		<div class="box">
+			<div class="title"><h2>公告栏</h2><a class="more" href="{url:/site/notice}">更多...</a></div>
+			<div class="cont">
+				<ul class="list">
+					{query:name=announcement limit=6 order=id desc}
+					{set:$tmpId=$item['id'];}
+					<li><a href="{url:/site/notice_detail/id/$tmpId}">{echo:Article::showTitle($item['title'],$item['color'],$item['style'])}</a></li>
+					{/query}
+				</ul>
+			</div>
+			<dl class="notice_1">
+				<dd class="fore2">
+					<a class="login" href="{url:/simple/login?callback=$callback}"></a>
+					<a class="register" href="{url:/simple/reg?callback=$callback}"></a>
+				</dd>
+			</dl>
+		</div>
+		<!--cms新闻展示-->
+	</div>
+
+	<!--幻灯片 开始-->
+	<div class="f_l" style="width:960px;">
+		{if:$this->index_slide}
+		<ul class="bxslider">
+			{foreach:items=$this->index_slide}
+			<li title="{$item['name']}"><a href="{url:$item[url]}" target="_blank"><img src="{webroot:$item[img]}" width="960px" height="253px;" title="{$item['name']}" /></a></li>
+			{/foreach}
+		</ul>
+		{/if}
+	</div>
+	<!--幻灯片 结束-->
+</div>
+
+<div class="m_10">
+{echo:Ad::show(6)}
+</div>
+<div class="wrapper clearfix">
+	<div class="sidebar f_r">
+
+		<!--热卖商品-->
+		<div class="hot box m_10">
+			<div class="title"><h2>热卖商品</h2></div>
+			<div class="cont clearfix">
+				<ul class="prolist">
+					{query:name=commend_goods as co join=left join goods as go on co.goods_id eq go.id where=co.commend_id eq 3 and go.is_del eq 0 AND go.id is not null fields=go.img,go.sell_price,go.name,go.id limit=8 order=sort asc,id desc}
+					{set:$tmpId=$item['id']}
+					<li>
+						<a href="{url:/site/products/id/$tmpId}"><img src="{webroot:}{echo:Thumb::get($item['img'],85,85)}" width="85" height="85" alt="{$item['name']}" /></a>
+						<p class="pro_title"><a href="{url:/site/products/id/$tmpId}">{$item['name']}</a></p>
+						<p class="brown"><b>￥{$item['sell_price']}</b></p>
+					</li>
+					{/query}
+				</ul>
+			</div>
+		</div>
+		<!--热卖商品-->
+
+		<!--公告通知-->
+		<div class="box m_10">
+			<div class="title"><h2>公告通知</h2><a class="more" href="{url:/site/notice}">更多...</a></div>
+			<div class="cont">
+				<ul class="list">
+					{query:name=announcement limit=5 order=id desc}
+					{set:$tmpId=$item['id'];}
+					<li><a href="{url:/site/notice_detail/id/$tmpId}">{$item['title']}</a></li>
+					{/query}
+				</ul>
+			</div>
+		</div>
+		<!--公告通知-->
+
+		<!--关键词-->
+		<div class="box m_10">
+			<div class="title"><h2>关键词</h2><a class="more" href="{url:/site/tags}">更多...</a></div>
+			<div class="tag cont t_l">
+				{query:name=keyword where=hot eq 1 limit=8 order=`order` asc}
+				{set:$searchWord =urlencode($item['word']);}
+				<a href="{url:/site/search_list/word/$searchWord}" class="orange">{$item['word']}</a>
+				{/query}
+			</div>
+		</div>
+		<!--关键词-->
+
+		<!--电子订阅-->
+		<div class="book box m_10">
+			<div class="title"><h2>电子订阅</h2></div>
+			<div class="cont">
+				<p>我们会将最新的资讯发到您的Email</p>
+				<input type="text" class="gray_m light_gray f_l" name='orderinfo' value="输入您的电子邮箱地址" />
+				<label class="btn_orange"><input type="button" onclick="orderinfo();" value="订阅" /></label>
+			</div>
+		</div>
+		<!--电子订阅-->
+		<div class="box">
+			<div id="adHere_7"></div>
+			<script language="javascript">
+			(new adLoader()).load(7,'adHere_7');
+			</script>
+		</div>
+	</div>
+
+	<div class="main f_l">
+		<!--企业文化-->
+		<div class="comment box m_10 f_l">
+			<div class="title2"><h2>企业文化</h2></div>
+			<div class="cont clearfix">
+				<div class="fcontentstr lineheight200" style="text-align: left;">
+					<img title="tel" src="./635023369402500000737286408.jpg" width="331px;" style="float: left;margin:5px 10px 5px 5px">
+					<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;品味人生让自己的生活变得更有品质是我们的宗旨。每个人来到这个世界上，都在做着“找、悟、道”三件事情。寻找人生目标，实现目标后感悟经历，修行出自己的道。如何让自己生活的更有品味，更好的享受生活，不妨加入我们一起来学习和体验人生吧。</div>
+					<div class="society_con">
+						<ul class="list">
+							{query:name=article_category where=parent_id eq 18 order=id desc  limit=5 }
+							<li><a href="{url:/site/article/id/$item[id]}" title="{$item['name']}">{$item['name']}</a></li>
+							{/query}
+						</ul>
+					</div>
+					<a  href="{url:/site/article/id/18}" title="" class="fr mr5 c_red a_m">&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;详情</a>
+				</div>					
+			</div>
+		</div>
+		<!--企业文化-->
+		<!--品质人生-->
+		<div class="comment box m_10 f_r">
+			<div class="title2"><h2>品质人生</h2></div>
+			<div class="cont clearfix">
+				<div class="fcontentstr lineheight200" style="text-align: left;">
+					<img title="tel" src="./pz.jpg" width="200px;" style="float: left;margin:5px 10px 5px 5px">
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;怎么样才算是有品质的人生？有钱是不是就是就有品质？一个月收入3万元的人，一定比一个收入为3000的人过的有品质，这点毋庸置疑，但是，一个月入10万的人却不一定比月入3万的人过的更为幸福。要过上幸福有品质的生活就要学会做一个真正懂生活的人。
+					<div class="society_con">
+						<ul class="list">
+							{query:name=article_category where=parent_id eq 19 order=id desc  limit=5 }
+							<li><a href="{url:/site/article/id/$item[id]}" title="{$item['name']}">{$item['name']}</a></li>
+							{/query}
+						</ul>
+					</div>
+					<a  href="{url:/site/article/id/19}" title="" class="fr mr5 c_red a_m">&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;详情</a>
+				</div>					
+			</div>
+		</div>
+		<!--品质人生-->
+		<!--品鉴人生-->
+		<div class="comment box m_10 f_l">
+			<div class="title2"><h2>品鉴人生</h2></div>
+			<div class="cont clearfix">
+				<div class="fcontentstr lineheight200" style="text-align: left;">
+					<img title="tel" src="./pj.jpg" width="331px;" style="float: left;margin:5px 10px 5px 5px">
+					<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;生活要多姿多彩才能让人觉得快乐，生活水平提高了，同时也要学会如何品鉴高雅的商品，品是为品优，鉴是为鉴真。</div>
+					<div class="society_con">
+						<ul class="list">
+							{query:name=article_category where=parent_id eq 20 order=id desc  limit=5 }
+							<li><a href="{url:/site/article/id/$item[id]}" title="{$item['name']}">{$item['name']}</a></li>
+							{/query}
+						</ul>
+					</div>
+					<a  href="{url:/site/article/id/20}" title="" class="fr mr5 c_red a_m">&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;详情</a>
+				</div>					
+			</div>
+		</div>
+		<!--品鉴人生-->
+		<!--才艺人生-->
+		<div class="comment box m_10 f_r">
+			<div class="title2"><h2>才艺人生</h2></div>
+			<div class="cont clearfix">
+				<div class="fcontentstr lineheight200" style="text-align: left;">
+					<img title="tel" src="./cy.jpg" width="331px;" style="float: left;margin:5px 10px 5px 5px">
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;才艺就象生活技能一样，让自己满足，家人满意，让期待你的人没小看过你，让自己的人生过的更有意义。
+					<div class="society_con">
+						<ul class="list">
+							{query:name=article_category where=parent_id eq 21 order=id desc  limit=5 }
+							<li><a href="{url:/site/article/id/$item[id]}" title="{$item['name']}">{$item['name']}</a></li>
+							{/query}
+						</ul>
+					</div>
+					<a  href="{url:/site/article/id/21}" title="" class="fr mr5 c_red a_m">&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;详情</a>
+				</div>					
+			</div>
+		</div>
+		<!--才艺人生-->
+		<!--健康人生-->
+		<div class="comment box m_10 f_l">
+			<div class="title2"><h2>健康人生</h2></div>
+			<div class="cont clearfix">
+				<div class="fcontentstr lineheight200" style="text-align: left;">
+					<img title="tel" src="./jk.jpg" width="331px;" style="float: left;margin:5px 10px 5px 5px">
+					<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;人通过运用自然界的物质和人体自身的修复能力，使疾病自愈，以人体健康为核心，教育患者采用健康的生活方式，增强机体的自愈能力，应用自然和无毒的疗法。而运用纯净有机食品配合干净的水定量指导患者服用我们称之为自然疗法。</div>
+					<div class="society_con">
+						<ul class="list">
+							{query:name=article_category where=parent_id eq 22 order=id desc  limit=5 }
+							<li><a href="{url:/site/article/id/$item[id]}" title="{$item['name']}">{$item['name']}</a></li>
+							{/query}
+						</ul>
+					</div>
+					<a  href="{url:/site/article/id/22}" title="" class="fr mr5 c_red a_m">&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;详情</a>
+				</div>					
+			</div>
+		</div>
+		<!--健康人生-->
+		<!--旅游人生-->
+		<div class="comment box m_10 f_r">
+			<div class="title2"><h2>旅游人生</h2></div>
+			<div class="cont clearfix">
+				<div class="fcontentstr lineheight200" style="text-align: left;">
+					<img title="tel" src="./ly1.jpg" width="220px;" style="float: left;margin:5px 10px 5px 5px">
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;人生就像一场旅行，不必在乎目的地，在乎的，是沿途的风景，以及看风景的心情。暮暮朝朝又一载，每个人都是匆匆的行者。人生在世，各有各的生存状态，各有各的心路历程，也各有各的价值观念，这都是不能强求的。在物欲横行的今天，如果一个人注意调适自我，对物欲的追求少一点，对精神的追求多一点，多一份闲云野鹤的生活，少一点尘世的俗累。那么就可以很从容地欣赏沿途的景色。
+					<div class="society_con">
+						<ul class="list">
+							{query:name=article_category where=parent_id eq 23 order=id desc  limit=5 }
+							<li><a href="{url:/site/article/id/$item[id]}" title="{$item['name']}">{$item['name']}</a></li>
+							{/query}
+						</ul>
+					</div>
+					<a  href="{url:/site/article/id/23}" title="" class="fr mr5 c_red a_m">&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;详情</a>
+				</div>					
+			</div>
+		</div>
+		<!--旅游人生-->
+		<!--运动人生-->
+		<div class="comment box m_10 f_l">
+			<div class="title2"><h2>运动人生</h2></div>
+			<div class="cont clearfix">
+				<div class="fcontentstr lineheight200" style="text-align: left;">
+					<img title="tel" src="./yd.jpg" width="240px;" style="float: left;margin:5px 10px 5px 5px">
+					<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;健康是1，事业、荣誉、地位、财富是0；有了1，后面的0才越多越好。没有1，0再多也没有意义。运动不仅是健康，运动还是一种投资，运动是一种理念，运动是一种生活，运动的内涵与意义丰富而深远。</div>
+					<div class="society_con">
+						<ul class="list">
+							{query:name=article_category where=parent_id eq 24 order=id desc  limit=5 }
+							<li><a href="{url:/site/article/id/$item[id]}" title="{$item['name']}">{$item['name']}</a></li>
+							{/query}
+						</ul>
+					</div>
+					<a  href="{url:/site/article/id/24}" title="" class="fr mr5 c_red a_m">&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;详情</a>
+				</div>					
+			</div>
+		</div>
+		<!--运动人生-->
+		<!--美丽人生-->
+		<div class="comment box m_10 f_r">
+			<div class="title2"><h2>美丽人生</h2></div>
+			<div class="cont clearfix">
+				<div class="fcontentstr lineheight200" style="text-align: left;">
+					<img title="tel" src="./ml.jpg" width="230px;" style="float: left;margin:5px 10px 5px 5px">
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;人生就像一场旅行，不必在乎目的地，在乎的，是沿途的风景，以及看风景的心情。暮暮朝朝又一载，每个人都是匆匆的行者。人生在世，各有各的生存状态，各有各的心路历程，也各有各的价值观念，这都是不能强求的。在物欲横行的今天，如果一个人注意调适自我，对物欲的追求少一点，对精神的追求多一点，多一份闲云野鹤的生活，少一点尘世的俗累。那么就可以很从容地欣赏沿途的景色。
+					<div class="society_con">
+						<ul class="list">
+							{query:name=article_category where=parent_id eq 25 order=id desc  limit=5 }
+							<li><a href="{url:/site/article/id/$item[id]}" title="{$item['name']}">{$item['name']}</a></li>
+							{/query}
+						</ul>
+					</div>
+					<a  href="{url:/site/article/id/25}" title="" class="fr mr5 c_red a_m">&nbsp;&nbsp;&nbsp;&gt;&gt;&gt;详情</a>
+				</div>					
+			</div>
+		</div>
+		<!--美丽人生-->
+
+	</div>
+</div>
+
+<script type='text/javascript'>
+//dom载入完毕执行
+jQuery(function()
+{
+	//幻灯片开启
+	$('.bxslider').bxSlider({'mode':'fade','captions':true,'pager':false,'auto':true});
+
+	//index 分类展示
+	$('#index_category tr').hover(
+		function(){
+			$(this).addClass('current');
+		},
+		function(){
+			$(this).removeClass('current');
+		}
+	);
+
+	//email订阅 事件绑定
+	var tmpObj = $('input:text[name="orderinfo"]');
+	var defaultText = tmpObj.val();
+	tmpObj.bind({
+		focus:function(){checkInput($(this),defaultText);},
+		blur :function(){checkInput($(this),defaultText);}
+	});
+
+	//显示抢购倒计时
+	var cd_timer = new countdown();
+	{foreach:items = $countNumsItem}
+		cd_timer.add({$item});
+	{/foreach}
+
+	//首页商品变色
+	var colorArray = ['green','yellow','purple'];
+	$('div[name="showGoods"]').each(function(i)
+	{
+		$(this).addClass(colorArray[i%colorArray.length]);
+	});
+});
+
+//电子邮件订阅
+function orderinfo()
+{
+	var email = $('[name="orderinfo"]').val();
+	if(email == '')
+	{
+		alert('请填写正确的email地址');
+	}
+	else
+	{
+		$.getJSON('{url:/site/email_registry}',{email:email},function(content){
+			if(content.isError == false)
+			{
+				alert('订阅成功');
+				$('[name="orderinfo"]').val('');
+			}
+			else
+				alert(content.message);
+		});
+	}
+}
+</script>
