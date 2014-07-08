@@ -1,0 +1,86 @@
+{set:
+	$seo_data=array();
+	$site_config=new Config('site_config');
+	$seo_data['title']=$this->articleRow['title'];
+	$seo_data['title'].="_".$site_config->name;
+	$seo_data['keywords']=$this->articleRow['keywords'];
+	$seo_data['description']=$this->articleRow['description'];
+	seo::set($seo_data);
+}
+{set:$breadGuide = Article::articlecatRecursion($this->article_id)}
+<div class="position">
+	<span>您当前的位置：</span>
+	<a href="{url:}">首页</a>{foreach:items=$breadGuide} » <a href="{url:/site/article/id/$item[id]}">{$item['name']}</a>{/foreach}
+	 » {$this->articleRow['title']}
+</div>
+<div class="wrapper clearfix container_2">
+	<div class="sidebar f_l">
+		<!--侧边栏分类-->
+		{set:$catSide = Article::articleTree($this->article_id);}
+		{if:$catSide}
+		<div class="box_2 m_10">
+			<div class="title">分类</div>
+			<div class="content">
+				{foreach:items=$catSide item=$first}
+				<dl class="clearfix">
+					<dt><a href="{url:/site/article/id/$first[id]}">{$first['name']}</a></dt>
+					{query:name=article_category where=parent_id eq $first[id] order=sort asc item=$second items=$seconds}
+					<dd><a href="{url:/site/article/id/$second[id]}">{$second['name']}</a></dd>
+					{/query}
+				</dl>
+				{/foreach}
+			</div>
+		</div>
+		{/if}
+		<div class="box m_10">
+			<div class="title">热卖商品</div>
+			<div class="content">
+			  <ul class="ranklist">
+				{query:name=commend_goods as commend join=left join goods as go on go.id eq commend.goods_id
+					where  = commend_id eq 3 and go.is_del eq 0 AND go.id is not null
+					fields = go.id,go.img,go.name,go.sell_price
+					order = go.sort ASC,go.id DESC
+					limit  = 5
+				}
+				<li class='current'><a href="{url:/site/products/id/$item[id]}"><img src="{webroot:}{echo:Thumb::get($item['img'],58,58)}" width="58" height="58" alt="{$item['name']}" /></a><a title="{$item['name']}" class="p_name" href="{url:/site/products/id/$item[id]}">{$item['name']}</a><b>￥{$item['sell_price']}</b></li>
+				{/query}
+			  </ul>
+			</div>
+		</div>
+		{echo:Ad::show(10)}
+	</div>
+	<div class="main f_r">
+		<div class="box m_10">
+			<div class="title2">文章详情</div>
+			<div class="cont">
+				<div class="c_box">
+					<h2>{$this->articleRow['title']}</h2>
+					<div class="partake_bar clearfix">
+						<span class="f_r"></span>发布日期：{$this->articleRow['create_time']}
+					</div>
+					<hr class="m_10" />
+					<div class="textcontent">
+						<p>{$this->articleRow['content']}</p>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		{if:!empty($this->relationList)}
+		<div class="box m_10">
+			<div class="title2 m_10">相关商品</div>
+			<div class="parts clearfix">
+				<ul class="prolist">
+					{foreach:items = $this->relationList}
+					<li>
+						<a href="{url:/site/products/id/$item[id]}"><img width="98" height="106" src="{webroot:}{echo:Thumb::get($item['img'],98,106)}" alt="{$item['name']}"></a>
+						<p class="pro_title"><a href="{url:/site/products/id/$item[id]}">{$item['name']}</a></p>
+						<p class="brown"><b>￥{$item['sell_price']}</b></p>
+					</li>
+					{/foreach}
+				</ul>
+			</div>
+		</div>
+		{/if}
+	</div>
+</div>
