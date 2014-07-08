@@ -1,0 +1,237 @@
+{set:
+	$myCartObj  = new Cart();
+	$myCartInfo = $myCartObj->getMyCart();
+	$siteConfig = new Config("site_config");
+	$callback   = IReq::get('callback') ? urlencode(IFilter::act(IReq::get('callback'),'url')) : '';
+}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>{echo:$siteConfig->name}</title>
+	<link type="image/x-icon" href="favicon.ico" rel="icon">
+	<link rel="stylesheet" href="{skin:css/index.css}" />
+	{js:jquery}
+	{js:form}
+	{js:validate}
+	{js:dialog}
+	{js:artTemplate}
+	<script type='text/javascript' src="{theme:javascript/common.js}"></script>
+	<script type='text/javascript' src='{theme:javascript/site.js}'></script>
+	{set:$sonline = new Sonline();$sonline->show($siteConfig->phone,$siteConfig->service_online);}
+</head>
+<body class="index">
+	<div class="shortcut">
+		<div class="w fn-clear">
+			<ul class="fn-right">
+				<li>{if:$this->user}
+				{$this->user['username']}您好，欢迎您来到{echo:$siteConfig->name}购物！[<a href="{url:/simple/logout}" class="reg">安全退出</a>]
+				{else:}
+				[<a href="{url:/simple/login?callback=$callback}">登录</a>][<a class="reg" href="{url:/simple/reg?callback=$callback}">免费注册</a>]
+				{/if}
+				</li>
+				<li><s></s><a href="{url:/ucenter/index}">我的账户</a></li>
+				<li><s></s><a href="{url:/ucenter/order}">我的订单</a></li>
+				<li><s></s><a href="{url:/site/help_list}">使用帮助</a></li>
+			</ul>
+			<ul class="fn-left">
+				<li class="index"><b></b><a href="javascript:addToFavorite('http://127.0.0.1:8089','Mallbuilder')"> 收藏首页</a></li>
+			</ul>
+		</div>
+	</div>
+	<div class="header">
+		<div class="w fn-clear">
+			<div class="logo">
+			<a title="{echo:$siteConfig->name}" href="{url:}"><img src="{webroot:image/logo.gif}" /></a>
+			</div>
+			<dl class="code">
+				<dt>扫一扫</dt>
+				<dd><img height="72" src="{skin:images/phpqrcode.jpg}"></dd>
+			</dl>
+
+			<div class="search">
+				<form action="{url:/}" class="form" method="get">
+				<div class="i-search">
+					<input type='hidden' name='controller' value='site' />
+					<input type='hidden' name='action' value='search_list' />
+					<input class="text" type="text" name='word' autocomplete="off" value="输入关键字..." />
+				</div>
+				<input class="button" type="submit" value="搜&nbsp;索" onclick="checkInput('word','输入关键字...');" />
+				</form>
+				<div class="hotwords">
+					<strong>热门搜索：</strong>
+					{query:name=keyword where=hot eq 1 limit=5 order=`order` asc}
+					{set:$tmpWord = urlencode($item['word']);}
+					<a href="{url:/site/search_list/word/$tmpWord}">{$item['word']}</a>
+					{/query}
+				</div>
+			</div>
+		</div>  
+	</div>
+	<div class="menu">
+		<div class="w">
+			<dl class="dl">
+			<dt class="dt"><h2><a href="javascript:void(0);">信康公司服务项目</a></h2></dt>
+			<dd class="dd">
+				<div id="J_Category" class="category">
+					<div class="navcatgory">
+						<ul>
+							{query:name=category where=parent_id eq 0 and visibility eq 1 order=sort asc item = $second}
+							<li class="j_MenuItem">
+								<p>
+									<em style="background-image:url();"><a href="{url:/site/pro_list/cat/$second[id]}">{$second['name']}</a></em>
+								</p>
+							</li>
+							{/query}
+						</ul>
+					</div>
+					<div id="J_SubCategory" class="subCategory">
+						{query:name=category where=parent_id eq 0 and visibility eq 1 order=sort asc item = $second}
+						<div class="j_SubView fn-clear">
+							<div class="catlist">  
+								{set:$n=0;}
+								{query:name=category where=parent_id eq $second[id] and visibility eq 1 order=sort asc item = $third}
+								{set:$n++}
+								<dl class="fore{$n}">
+									<dt><a href="{url:/site/pro_list/cat/$third[id]}">{$third['name']}</a></dt>
+									{if:$third}
+									<dd>
+									{query:name=category where=parent_id eq $third[id] and visibility eq 1 order=sort asc item = $fourth}
+									<a href="{url:/site/pro_list/cat/$fourth[id]}">{$fourth['name']}</a>
+									{/query}
+									</dd>
+									{/if}
+								</dl>
+								{/query}
+							</div>
+
+						</div>
+						{/query}
+					</div>   
+				</div>
+			</dl>
+			<ul class="menu-items">
+				<li class="selected"><a style="width:80px;" href="{url:/site/index}">首页</a></li>
+				{query:name=guide}
+				<li><a href="{url:$item[link]}">{$item['name']}<span> </span></a></li>
+				{/query}
+				<li class="cart">
+				<a href="{url:/simple/cart}">
+				<b>{$myCartInfo['count']}</b>
+				我的购物车
+				</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+
+
+<div class="container">
+	
+	{echo:Ad::show(1)}
+
+	{viewcontent}
+
+	<div class="help m_10">
+		<div class="cont clearfix">
+			{query:name=help_category where=position_foot eq 1 order=sort ASC,id desc limit=5 item=$helpCat}
+			<dl>
+     			<dt><a href="{url:/site/help_list/id/$helpCat[id]}">{$helpCat['name']}</a></dt>
+     			{query:name=help where=cat_id eq $helpCat[id] order=sort ASC,id desc}
+					<dd><a href="{url:/site/help/id/$item[id]}">{$item['name']}</a></dd>
+				{/query}
+      		</dl>
+      		{/query}
+		</div>
+	</div>
+	{echo:$siteConfig->site_footer_code}
+</div>
+<script type='text/javascript' src='{theme:javascript/kissy.js}'></script>
+<script type='text/javascript' src='{theme:javascript/kissy.menu.js}'></script>	
+<!--选择货品添加购物车模板 开始-->
+<script type='text/html' id='selectProductTemplate'>
+<table width="100%">
+	<col />
+	<col width="80px" />
+	<col width="60px" />
+	<%for(var item in productData){%>
+	<%item = productData[item]%>
+	<tr>
+		<td align="left">
+			<%for(var spectName in item['specData']){%>
+			<%var spectValue = item['specData'][spectName]%>
+				<%=spectName%>：<%==spectValue%> &nbsp&nbsp
+			<%}%>
+		</td>
+		<td align="center"><span class="bold red2">￥<%=item['sell_price']%></span></td>
+		<td align="right"><label class="btn_gray_s"><input type="button" onclick="joinCart_ajax('<%=item['id']%>','product');" value="购买"></label></td>
+	</tr>
+	<%}%>
+	<tr>
+		<td colspan='3' align="left"><a href="{url:/site/products/id/<%=item['goods_id']%>}">查看更多</a></td>
+	</tr>
+</table>
+</script>
+<!--选择货品添加购物车模板 结束-->
+
+<script type='text/javascript'>
+$(function()
+{
+	{set:$word = IReq::get('word') ? IFilter::act(IReq::get('word'),'text') : '输入关键字...'}
+	$('input:text[name="word"]').val("{$word}");
+
+	$('input:text[name="word"]').bind({
+		keyup:function(){autoComplete('{url:/site/autoComplete}','{url:/site/search_list/word/@word@}','{$siteConfig->auto_finish}');}
+	});
+
+	var mycartLateCall = new lateCall(200,function(){showCart('{url:/simple/showCart}')});
+
+	//购物车div层
+	$('.mycart').hover(
+		function(){
+			mycartLateCall.start();
+		},
+		function(){
+			mycartLateCall.stop();
+			$('#div_mycart').hide('slow');
+		}
+	);
+});
+
+//[ajax]加入购物车
+function joinCart_ajax(id,type)
+{
+	$.getJSON("{url:/simple/joinCart}",{"goods_id":id,"type":type,"random":Math.random()},function(content){
+		if(content.isError == false)
+		{
+			var count = parseInt($('[name="mycart_count"]').html()) + 1;
+			$('[name="mycart_count"]').html(count);
+			$('.msgbox').hide();
+			alert(content.message);
+		}
+		else
+		{
+			alert(content.message);
+		}
+	});
+}
+
+//列表页加入购物车统一接口
+function joinCart_list(id)
+{
+	$.getJSON('{url:/simple/getProducts}',{"id":id},function(content){
+		if(!content)
+		{
+			joinCart_ajax(id,'goods');
+		}
+		else
+		{
+			var selectProductTemplate = template.render('selectProductTemplate',{'productData':content});
+			$('#product_box_'+id).html(selectProductTemplate);
+			$('#product_box_'+id).parent().show();
+		}
+	});
+}
+</script>
+</body>
+</html>
