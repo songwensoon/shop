@@ -1,0 +1,73 @@
+<div class="box_title titbg">
+    <div class="closer sprite i_close" onclick="Mui.box.close()"></div>
+    创建相册</div>
+</div>
+<div class="box_container">
+    <form id="albums_create" action="/?ctl=albums&amp;act=save" method="post" onsubmit="return false;">
+        <div class="field">
+            <div class="label">相册名 *</div>
+            <div class="ipts"><input type="text" name="album_name" class="inputstyle iptw1"></div>
+            <div class="clear"></div>
+        </div>
+        <div class="field">
+            <div class="label">相册描述</div>
+            <div class="ipts"><textarea name="desc" class="inputstyle iptw3 ipth1"></textarea></div>
+            <div class="clear"></div>
+        </div>
+		<div class="field">
+            <div class="label">所属的分类</div>
+            <div class="ipts"><select id="cate_id" name="cate_id">
+				<option value="0">未分类</option>
+                                    <option value="1">sadsadsa</option>
+                            </select> <span class="gray"><a href="javascript:void(0)" onclick="Mui.box.show('/?ctl=category&amp;act=create&amp;from=Lz9jdGw9YWxidW1zJmFjdD1jcmVhdGU%3D',true)" class="ml10">创建分类</a></span></div>
+            <div class="clear"></div>
+        </div>
+        <div class="field">
+            <div class="label">权限设置</div>
+            <div class="ipts"><label><input type="radio" name="priv_type" value="0" checked="checked" onclick="$('#filed_password').hide();$('#filed_question').hide();"> 公开</label> <label><input type="radio" name="priv_type" value="1" onclick="$('#filed_password').show();$('#filed_question').hide();"> 密码访问</label> <label><input type="radio" name="priv_type" value="2" onclick="$('#filed_password').hide();$('#filed_question').show();"> 问题访问</label> <label><input type="radio" name="priv_type" value="3" onclick="$('#filed_password').hide();$('#filed_question').hide();"> 私人</label> </div>
+            <div class="clear"></div>
+        </div>
+        <div id="filed_password" style="display:none;">
+            <div class="field">
+                <div class="label">输入密码 *</div>
+                <div class="ipts">
+                    <input id="password_ipt" type="password" name="priv_pass" class="inputstyle iptw1" value=""><input class="ml5" type="checkbox" value="1" onclick="setMask('password_ipt',this.checked)"> 显示密码                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+        <div id="filed_question" style="display:none;">
+            <div class="field">
+                <div class="label">输入问题 *</div>
+                <div class="ipts">
+                    <input type="text" name="priv_question" class="inputstyle iptw1"> <span class="gray">举例：我的名字？</span>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div class="field">
+                <div class="label">问题答案 *</div>
+                <div class="ipts">
+                   <input type="text" name="priv_answer" class="inputstyle iptw1"> <span class="gray">举例：张三</span>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+        <div class="field">
+            <div class="label">相册标签</div>
+            <div class="ipts"><input type="text" name="album_tags" class="inputstyle iptw1"> <span class="gray">用空格或,分割</span></div>
+            <div class="clear"></div>
+        </div>
+                <div class="field">
+            <div class="label">是否允许评论</div>
+            <div class="ipts"><input type="checkbox" name="enable_comment" value="1" checked="checked"> <span class="gray"></span></div>
+            <div class="clear"></div>
+        </div>
+                <div class="field">
+            <div class="label"> &nbsp;</div>
+            <div class="ipts"><input type="submit" value="创建相册" class="ylbtn f_left" name="submit" onclick="Mui.form.sendAuto('albums_create')"> <input type="button" value="取消" class="ml10 graybtn f_left" name="cancel" onclick="Mui.box.close()"></div>
+            <div class="clear"></div>
+        </div>
+    </form>
+</div>
+<script>
+$('#albums_create').find('input[name=album_name]').focus();
+</script>
