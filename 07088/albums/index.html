@@ -1,0 +1,64 @@
+<style>
+#copy_notice{
+	position:absolute;
+	z-index:1103;
+	height:15px;
+	width:80px;
+	padding:5px;
+	border:1px solid #eee;
+	background:#FFFFEE;
+}
+.left {
+	border: 1px solid #EEE;
+}
+</style>
+<div id="bodywrap">
+    	<div class="filter">
+        		<div class="search f_right ml10">
+			<form id="album_search" action="/?ctl=albums" method="post">
+			    <input type="text" name="sname" value="" placeholder="搜索相册">
+			    <button type="submit" name="submit"></button>
+			</form>
+		</div>
+                		<div class="f_right">
+			<select id="par_id" name="par_id" onchange="window.location.href=this.value">
+                <option value="/?ctl=albums&amp;cate=0">未分类相册</option>
+									<option value="/?ctl=albums&amp;cate=1">sadsadsa</option>
+				            </select>
+		</div>
+		<div class="display_setting f_left">
+			<ul class="tab pset f_left">
+			<li class="current"><a href="javascript:void(0);" onclick="page_setting('album',12);"><span>12</span></a></li>
+			<li><a href="javascript:void(0);" onclick="page_setting('album',30);"><span>30</span></a></li>
+			<li><a href="javascript:void(0);" onclick="page_setting('album',56);"><span>56</span></a></li>
+	</ul>
+		<ul class="tab f_left listorder">
+				<li><a href="javascript:void(0);" onclick="sort_setting('album','ct_desc');" class="list_asc"><span>创建时间</span></a></li>
+				<li class="current"><a href="javascript:void(0);" onclick="sort_setting('album','ut_asc');" class="list_desc_on"><span>上传时间</span></a></li>
+				<li><a href="javascript:void(0);" onclick="sort_setting('album','p_desc');" class="list_asc"><span>照片数</span></a></li>
+			</ul>		
+		</div>
+        	</div>
+    
+            <table class="layout">
+        <tbody><tr>
+            <td class="left">
+                <div class="mainbody">
+                                            <div class="no_data_info">
+                                                        <div class="pic no_album png"></div>
+                            <div class="data_msg">
+                                                                <div>当前没有任何相册，点击“创建新相册”建立您自己的相册吧。</div>
+                                <div class="button"><div class="bigbutton"><a href="javascript:void(0)" onclick="Mui.box.show('{url:/albums/create}',true);"><span>创建新相册</span></a></div></div>
+                                                            </div>
+                            <div class="clear"></div>
+                                                    </div>
+                                    </div>
+            </td>
+        </tr>
+    </tbody></table>
+</div>
+<script src="/statics/js/common.js" type="text/javascript"></script>
+<script src="/statics/js/admin.js" type="text/javascript"></script>
+<script type="text/javascript">
+$.Placeholder.init();
+</script>
