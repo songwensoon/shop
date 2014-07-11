@@ -9,54 +9,131 @@
 	background:#FFFFEE;
 }
 .left {
-	border: 1px solid #EEE;
+	border: 0px solid #EEE;
+}
+.pages_bar {
+	text-align: center;
+}
+.pages_bar a, .pages_bar span {
+padding: 7px 7px 6px;
 }
 </style>
 <div id="bodywrap">
-    	<div class="filter">
-        		<div class="search f_right ml10">
-			<form id="album_search" action="/?ctl=albums" method="post">
-			    <input type="text" name="sname" value="" placeholder="搜索相册">
-			    <button type="submit" name="submit"></button>
+	<div class="filter">
+		<div class="search f_right ml10">
+			<form id="album_search" action="{url:/albums/index}" method="post">
+				<input type="text" name="sname" value="" placeholder="搜索相册">
+				<button type="submit" name="submit"></button>
 			</form>
 		</div>
-                		<div class="f_right">
+		<div class="f_right">
 			<select id="par_id" name="par_id" onchange="window.location.href=this.value">
-                <option value="/?ctl=albums&amp;cate=0">未分类相册</option>
-									<option value="/?ctl=albums&amp;cate=1">sadsadsa</option>
-				            </select>
+				<option value="{url:/albums/index/cate/0}">未分类相册</option>
+				{foreach:items = $this->cate_list}
+				<option {if:$this->cate==$item[id]}selected="selected"{/if}  value="{url:/albums/index/cate/$item[id]}">{echo:str_repeat('--',$item['deep'])}{$item['name']}</option>
+				{/foreach}
+			</select>
 		</div>
 		<div class="display_setting f_left">
 			<ul class="tab pset f_left">
-			<li class="current"><a href="javascript:void(0);" onclick="page_setting('album',12);"><span>12</span></a></li>
-			<li><a href="javascript:void(0);" onclick="page_setting('album',30);"><span>30</span></a></li>
-			<li><a href="javascript:void(0);" onclick="page_setting('album',56);"><span>56</span></a></li>
-	</ul>
-		<ul class="tab f_left listorder">
+				<li class="current"><a href="javascript:void(0);" onclick="page_setting('album',12);"><span>12</span></a></li>
+				<li><a href="javascript:void(0);" onclick="page_setting('album',30);"><span>30</span></a></li>
+				<li><a href="javascript:void(0);" onclick="page_setting('album',56);"><span>56</span></a></li>
+			</ul>
+			<ul class="tab f_left listorder">
 				<li><a href="javascript:void(0);" onclick="sort_setting('album','ct_desc');" class="list_asc"><span>创建时间</span></a></li>
 				<li class="current"><a href="javascript:void(0);" onclick="sort_setting('album','ut_asc');" class="list_desc_on"><span>上传时间</span></a></li>
 				<li><a href="javascript:void(0);" onclick="sort_setting('album','p_desc');" class="list_asc"><span>照片数</span></a></li>
 			</ul>		
 		</div>
-        	</div>
+	</div>
     
-            <table class="layout">
-        <tbody><tr>
-            <td class="left">
-                <div class="mainbody">
-                                            <div class="no_data_info">
-                                                        <div class="pic no_album png"></div>
-                            <div class="data_msg">
-                                                                <div>当前没有任何相册，点击“创建新相册”建立您自己的相册吧。</div>
-                                <div class="button"><div class="bigbutton"><a href="javascript:void(0)" onclick="Mui.box.show('{url:/albums/create}',true);"><span>创建新相册</span></a></div></div>
-                                                            </div>
-                            <div class="clear"></div>
-                                                    </div>
-                                    </div>
-            </td>
-        </tr>
-    </tbody></table>
+	{if:!empty($this->albums)}
+    <div class="admin_bar">
+        <div class="f_left">
+            <label><input type="checkbox" value="1" onclick="Madmin.check_all('.selitem',this.checked)" />全选</label> <span class="i_trash_sp sprite"></span><a href="javascript:void(0)" onclick="Madmin.checked_action('.selitem','{link ctl=albums act=confirm_delete_batch}');">删除选中项</a>
+        </div>
+        <div class="f_right">
+            <div class="bigbutton"><a href="javascript:void(0)" onclick="Mui.box.show('{url:/albums/create}',true);"><span>创建新相册</span></a></div>
+        </div>
+        <div class="clear"></div>
+    </div>
+    {/if}
+
+
+
+    <table class="layout">
+        <tbody>
+			<tr>
+				<td class="left">
+					<div class="mainbody">
+						{if:!empty($this->albums)}	
+						<div class="innercol grid">
+							<div class="gallary_wrap">
+								{foreach:items = $this->albums}
+								<div class="gallary_item album">
+									<div class="item">
+										<div class="pic_box">
+											
+											<table>
+												<tr>
+													<td>
+														<a href="">{if:$item['cover_id']}<img alt="{$item['name']}" src="{$item['cover_path']}" />{else:}<img src="/statics/img/nophoto.gif" />{/if}</a>			
+													</td>
+												</tr>
+											</table>
+											
+										</div>
+										<div class="pic_ctl">
+											<ul class="btns">
+												<li><a href="javascript:void(0)" onclick="Mui.box.show('',true);" title="删除"><span class="i_littletrash sprite"></span></a></li>
+												<li><a href="javascript:void(0)" onclick="Mui.box.show('',true);" title="修改"><span class="i_edit sprite"></span></a></li>
+											</ul>
+										</div>
+										<div class="clear">
+										</div>
+									</div>
+									<div class="info">
+										<div class="title">
+										<input class="selitem" type="checkbox" name="sel_id[{$item['id']}]" value="1" /> <span class="name"><a nid="{$item['id']}" title="修改名称" href="javascript:void(0)" onclick="Madmin.rename(this,'{link ctl=albums act=rename id=$v['id']}')">{$item['name']}</a></span>
+										
+										</div>
+										<div class="info_col">
+											
+										</div>
+									</div>
+								</div>
+								{/foreach}
+								<div class="clear"></div>
+							</div>
+							<div class="paginator">
+								{$this->PageBarHtml}
+							</div>
+						</div>
+						{else:}
+						<div class="no_data_info">
+						<div class="pic no_album png"></div>
+						<div class="data_msg">
+							<div>当前没有任何相册，点击“创建新相册”建立您自己的相册吧。</div>
+								<div class="button">
+									<div class="bigbutton">
+										<a href="javascript:void(0)" onclick="Mui.box.show('{url:/albums/create}',true);"><span>创建新相册</span></a>
+									</div>
+								</div>
+							</div>
+							<div class="clear"></div>
+						</div>
+						{/if}
+					</div>
+				</td>
+			</tr>
+		</tbody>
+	</table>
 </div>
+
+
+
+
 <script src="/statics/js/common.js" type="text/javascript"></script>
 <script src="/statics/js/admin.js" type="text/javascript"></script>
 <script type="text/javascript">
