@@ -1,0 +1,47 @@
+<div id="bodywrap">
+    <table class="layout">
+        <tr>
+            <td class="left">
+                <div class="mainbody">
+                    <div class="innercol grid">
+						{if:!empty($this->albums_list)}
+                        <div id="upload_field">
+                            <form id="upload_photos_form" method="post" action="{url:/upload/$this->act}">
+                                <div class="field">
+                                    <div class="label">选择相册:</div>
+                                    <div class="ipts">
+                                        <select id="aid" name="aid">
+                                            {foreach:items = $this->albums_list}
+                                                <option value="{$item[id]}" {if:$this->album_id==$item[id]}selected="selected"{/if}>{echo:str_repeat('--',$item['deep'])}{$item['name']}</option>
+                                            {/foreach}
+                                        </select> <a  href="javascript:void(0)" onclick="Mui.box.show('{url:/albums/create}',true);" class="ml10">新建相册</a></div>
+                                    <div class="clear"></div>
+                                </div>
+                                <div class="field">
+                                    <div class="label">&nbsp;</div>
+                                    <div class="ipts"><input type="submit" name="uploadbtn" class="ylbtn" value="确定" /></div>
+                                    <div class="clear"></div>
+                                </div>
+                            </form>
+                        </div>
+                        {else:}
+                        <div class="no_data_info">
+                            <div class="pic no_album"></div>
+                            <div class="data_msg">
+                                <div>当前没有任何相册，点击“创建新相册”建立您自己的相册吧。</div >
+                                <div class="button"><div class="bigbutton"><a href="javascript:void(0)" onclick="Mui.box.show('{url:/albums/create}',true);"><span>创建新相册</span></a></div></div>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                        {/if}
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+<script src="/statics/js/common.js" type="text/javascript"></script>
+<script src="/statics/js/admin.js" type="text/javascript"></script>
+<script type="text/javascript">
+$.Placeholder.init();
+</script>
