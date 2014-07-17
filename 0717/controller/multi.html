@@ -1,0 +1,92 @@
+<div id="bodywrap">
+    <table class="layout">
+        <tr>
+            <td class="left">
+                <div class="mainbody">
+                    <div class="tab f_left mb10 wide">
+                       <ul>
+                           <li class="current"><a href="{url:/upload/multi/aid/$this->album_id}">高级上传</a></li>
+                           <li><a href="{url:/upload/normal/aid/$this->album_id}" class="current">普通模式</a></li>
+						   <li><a href="{url:/upload/import/aid/$this->album_id}">导入模式</a></li>
+                       </ul>
+                    </div>
+                    <div class="clear"></div>
+                    <div class="innercol grid">
+<script type="text/javascript" src="/statics/js/plupload.min.js"></script>
+<script type="text/javascript" src="/statics/js/jquery.plupload.queue.min.js"></script>
+<script>
+$(function() {
+    plupload.addI18n({
+        'Filename' : '文件名',
+        'Status' : '状态',
+        'Size' : '大小',
+        'Add files' : '添加图片',
+        'Stop current upload' : '停止上传',
+        'Start uploading queue' : '开始上传',
+        'Start upload' : '开始上传',
+        'Uploaded %d/%d files':'已上传 %d/%d 图片',
+        'Drag files here.' : '拖拽文件至此处.'
+    });
+
+   $("#muilti_uploader").pluploadQueue({
+        runtimes : 'html5,flash',
+        url : '{url:/upload/process/aid/$this->album_id}',
+        max_file_size : '15mb',
+        chunk_size : '512kb',
+        unique_names : false,
+        filters : [
+            {title : "Image files", extensions : "{$this->support_type}"}
+        ],
+        flash_swf_url : '/statics/swf/plupload.flash.swf'
+        {if:$this->upload_setting['enable_pre_resize']},
+        resize : {width : {$this->upload_setting['resize_width']}, height : {$this->upload_setting['resize_height']}, quality : {$this->upload_setting['resize_quality']}}
+        {/if}
+    });
+    var uploader = $('#muilti_uploader').pluploadQueue();
+    var usubmited = 0;
+    if(uploader){
+        uploader.bind('UploadProgress', function() {
+            if (uploader.total.uploaded == uploader.files.length && usubmited == 0){
+                usubmited = 1;
+                Mui.box.setData('<div class="loading">Loading...</div>');
+                Mui.form.sendPop('upload_photos_form');
+                setTimeout(function(){
+                    $('#upload_photos_form').submit();
+                },200);
+            }
+        });
+        $('#upload_photos_form').find('input[name="uploadbtn"]').click(function(e) {
+            if (uploader.total.uploaded == 0) {
+                if (uploader.files.length > 0) {
+                    uploader.start();
+                } else {
+                    Mui.box.alert('提示','至少选择一个文件上传.','确定');
+                }
+            }
+        });
+    }
+});
+</script>
+<link rel="stylesheet" href="/statics/plupload/plupload.queue.css" type="text/css" />
+                        <div id="upload_field">
+                            <form id="upload_photos_form" method="post" action="{url:/upload/save/t/multi/aid/$this->album_id}" onsubmit="return false;">
+                                <div class="field">
+                                    <div class="label">您选择了相册:</div>
+                                    <div class="ipts"><strong>{$this->album_info['name']}</strong> <a href="{url:/upload/index/t/multi/aid/$this->album_id}" class="ml10">返回重选</a></div>
+                                    <div class="clear"></div>
+                                </div>
+                                <div id="muilti_uploader">
+                                    <div class="notice_info">
+                                     载入中... <a href="{url:/upload/normal/aid/$this->album_id}">如果长时间没有响应，可以点此处切换至普通上传方式！</a>
+                                    </div>
+                                </div>
+                                <div align="center"><input type="button" name="uploadbtn" class="ylbtn" value="立即上传" /></div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
