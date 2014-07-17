@@ -7,7 +7,7 @@ body{font:12px/1.5 Microsoft Yahei; Helvetica, sans-serif;color:black;background
 img{border:0}
 table{border-collapse:collapse}
 ul li{list-style:none}
-hr{height:1px;border:none;border-top:1px solid #009334;overflow:hidden}
+hr{height:1px;border:none;border-top:1px solid #80BA2F;overflow:hidden}
 hr.dashed{border-top:1px dashed #e4e4e4}
 a.hidefocus{outline:none}
 button.hidefocus::-moz-focus-inner{border:none}
@@ -21,7 +21,7 @@ button.hidefocus::-moz-focus-inner{border:none}
 .orange{color:#d66b03}
 .red{color:#ff3200}
 a.red2,.red2{color:#ba0505}
-a.orange,.orange{color:#009334}
+a.orange,.orange{color:#80BA2F}
 a.blue,.blue{color:#36c}
 a.line{text-decoration:underline}
 .normal,a.normal{font-weight:normal}
@@ -372,7 +372,7 @@ div.prolist{margin:-1px 0 0;padding:8px 0;border-top:1px solid #e9e9e9}
 /* newslist style start */
 .list_title{margin:18px auto 0;padding:0 65px 0 75px;border:none;text-align:right;color:#5e5e5e;background-image:none}
 ul.newslist{padding:8px}
-	ul.newslist li{height:20px;padding:4px 30px 4px 14px;margin:8px auto;border-bottom:1px solid #009334;zoom:1}
+	ul.newslist li{height:20px;padding:4px 30px 4px 14px;margin:8px auto;border-bottom:1px solid #80BA2F;zoom:1}
 		ul.newslist li a{float:left;padding-left:10px;background:url(../images/front/sprites_2.gif) -181px -321px no-repeat}
 		ul.newslist li a.orange{ background-position:-181px -297px}
 		ul.newslist li span{float:right;color:#a4a4a4;font-family:"宋体"}
@@ -532,7 +532,7 @@ a.btn_pay{display:inline-block;width:119px;height:37px;margin-right:20px;backgro
 		.prompt_2 p b{margin:0 0 0 15px}
 		.prompt_2 p strong{margin-right:50px}
 		.prompt_2 p b.orange{margin:0 4px}
-	.prompt_2 .t_part{padding:5px 0;margin-bottom:10px;border-bottom:1px solid #009334}
+	.prompt_2 .t_part{padding:5px 0;margin-bottom:10px;border-bottom:1px solid #80BA2F}
 .prompt_3{text-align:left}
 	.prompt_3 strong{margin-top:20px}
 	.prompt_3 p{line-height:25px}
@@ -567,8 +567,8 @@ a.btn_pay{display:inline-block;width:119px;height:37px;margin-right:20px;backgro
 /* saleinfos style end */
 /* common title style start */
 .container_2 .box .title,.container_2 .box .title2,.container_2 .main .box .title3,.help_s .box .title{height:34px;line-height:34px;padding-left:15px;border-bottom:none;text-align:left;font-size:14px;font-weight:bold;background:#80BA2F;color:#FFFFFF}
-.container_2 .main .box .title{height:31px;line-height:30px;padding-left:15px;color:#404040;background-position:0 -29px}
-.container_2 .main .box .title2{height:33px;border-bottom:1px solid #009334;color:#404040;background-position:0 -249px}
+.container_2 .main .box .title{height:33px;line-height:33px;padding-left:15px;color:#404040;background-position:0 -29px}
+.container_2 .main .box .title2{height:33px;border-bottom:1px solid #80BA2F;color:#404040;background-position:0 -249px}
 .container_2 .main .box .title3{height:34px;line-height:34px;border-bottom:1px solid #e1e1e1;margin-top:0;color:#333;background-position:0 -366px}
 	.container_2 .main .box .title3 img{margin:7px 8px 0 0;vertical-align:text-bottom}
 	.container_2 .main .box .title3 span{margin-right:10px}
@@ -593,7 +593,7 @@ dl.textlist_2{margin:0 5px 10px 10px}
 /* textlist_2 style end */
 /* ranklist style start */
 ul.ranklist{background:#f8f8f8}
-	ul.ranklist li{height:26px;line-height:23px;padding:5px 25px 0;overflow:hidden;text-align:left;border-top:1px solid #e9e9e9}
+	ul.ranklist li{height:26px;line-height:26px;padding:5px 25px 4px;overflow:hidden;text-align:left;border-top:1px solid #e9e9e9}
 	ul.ranklist li.current{height:75px;background:#fff;white-space:normal}
 		ul.ranklist li.current a.p_name{ display:block;max-height:36px;overflow:hidden;_height:36px;}
  li.current a{line-height:18px}
@@ -611,8 +611,8 @@ ul.ranklist{background:#f8f8f8}
 		/* promotion style end*/
 /* ranklist style end */
 /* brand_list style start */
-.box_2{border:1px #009334 solid;background:#f0f0f0}
-	.box_2 .title{height:28px;padding-left:28px;line-height:28px;text-align:left;background: #80BA2F;color:#fff;font-weight:bold;font-size:14px}
+.box_2{border:1px #88b830 solid;background:#f0f0f0}
+	.box_2 .title{height:33px;padding-left:28px;line-height:33px;text-align:left;background: #80BA2F;color:#fff;font-weight:bold;font-size:14px}
 	.box_2 ul.brand_list{padding:0 3px;overflow:hidden;background-color:#fff}
 		.box_2 ul.brand_list li{width:100%;float:left;height:36px;line-height:38px;font-size:14px;text-align:left;border-bottom:1px solid #e0dfdc;background:url(../images/front/sprites_2.gif) 15px -57px no-repeat}
 		.box_2 ul.brand_list li.current{background-color:#f3f1eb}
