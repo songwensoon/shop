@@ -283,8 +283,8 @@ body.second .wrapper{border-top:2px solid #f76f10}
 .main{width:750px}
 .sidebar{width:200px}
 	.wrapper .box{border:1px #88b830  solid}
-		.wrapper .box .title{height:31px;border-bottom:1px #e1e1e1 solid;line-height:30px}
-		.wrapper .box .title2{height:36px;border-bottom:1px #e1e1e1 solid;line-height:36px}
+		.wrapper .box .title{height:35px;border-bottom:1px #88b830 solid;line-height:35px}
+		.wrapper .box .title2{height:36px;border-bottom:1px #88b830 solid;line-height:36px}
 		.wrapper .box .title3{height:41px;margin-top:10px;border-bottom:0;overflow:hidden}
 		.wrapper .box .title4{height:32px;background:#f3f3f3;line-height:32px}
 			.wrapper .box .title h2,.wrapper .box .title2 h2,.wrapper .box .title4 h2{float:left;display:inline;margin-left:17px;font-size:16px;color:#313131;text-align:left}
