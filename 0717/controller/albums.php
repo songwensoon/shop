@@ -14,18 +14,22 @@ class Albums extends IController
 
 		if(ISafe::get('user_id') == '')
 		{
+			echo "";exit;
 			$this->redirect('/simple/login');
 		}
 	}
     public function index()
     {
 		$pageSize = 10;
-		$cate = IReq::get('cate');
+		$cate = IReq::get('cate_id');
 		$user_id = ISafe::get('user_id');
 		$albumsDB   = new IQuery("albums");
 		if(empty($cate)){
 			$cate = 0;
 		}
+		$where = ' user_id='.$user_id.' and id='.$cate;
+		$albumcateDB = new IModel('albumcate');
+		$albumcateInfo = $albumcateDB->getObj($where);
 		$page = IReq::get('page');
 		if(!$page){
 			$page= 1;
@@ -34,12 +38,28 @@ class Albums extends IController
 		$albumsDB->page = $page;
 		$albumsDB->pagesize = 8;
 		$albumsRows = $albumsDB->find();
+		$photosDB = new IModel("photos");
+		$user_id = ISafe::get('user_id');
+		if(!empty($albumsRows)){
+			foreach($albumsRows as $k=>$v){
+				if($v['cover_id']){
+					$where = 'id='.$v['cover_id'].' and user_id='.$user_id;
+					$cover_info = $photosDB->getObj($where);
+					if($cover_info){
+						$albumsRows[$k]['cover_path'] = $cover_info['thumb'];
+					}else{
+						$albumsRows[$k]['cover_id'] = 0;
+					}
+				}
+			}
+		}
 		$PageBarHtml = $albumsDB->getPageBar();
 		$cate_list = Album_Category::get_flat_category();
 		$this->cate_list = $cate_list;
 		$this->PageBarHtml = $PageBarHtml;
 		$this->albums = $albumsRows;
 		$this->cate = $cate;
+		$this->albumcateInfo = $albumcateInfo;
         $this->redirect('index');
     }
 
