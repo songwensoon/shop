@@ -298,65 +298,6 @@ class Upload extends IController
         } 
         echo JSON::encode($return);
         exit;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        @set_time_limit(0);
-        header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
-        header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-        header("Cache-Control: no-store, no-cache, must-revalidate");
-        header("Cache-Control: post-check=0, pre-check=0", false);
-        header("Pragma: no-cache");
-
-        $type = IFilter::string(IReq::get('t'));
-		$album_id = IFilter::act( IReq::get('aid'),'int' );
-       
-
-        $chunk =  IFilter::act( IReq::get('chunk'),'int' );
-        $chunks = IFilter::act( IReq::get('chunks'),'int' );
-		$filename = IFilter::string(IReq::get('name'));
-        $filehashname = md5($filename);
-
-		//获得配置文件中的数据
-		$config = new Config("site_config");
-
-	 	//调用文件上传类
-		$photoObj = new PhotoUpload();
-		//设置缩略图大小
-		$photoObj->setThumb(180,180);
-		$result	= current($photoObj->albumphotorun());
-		
-		if($result['flag'] == 1)
-		{
-			$return = array('jsonrpc'=>'2.0','result'=>null,'id'=>'id');
-		}
-		else
-		{
-			$return = array(
-                'jsonrpc'=>'2.0',
-                'error'=> array( 
-                    'code'=>100,
-                    'message'=>$result['flag']
-                 ),
-                 'id'=>'id');
-		}
-		echo JSON::encode($return);
-		exit;
     }
 
     function reupload(){
@@ -431,33 +372,64 @@ class Upload extends IController
     function save(){
         @set_time_limit(0);
         @ignore_user_abort(true);
-        $type = $this->getGet('t');
-        $album_id = intval($this->getRequest('aid'));
-
+		$type = IFilter::string(IReq::get('t'));
+		$album_id = IFilter::act( IReq::get('aid'),'int' );
+        $user_id = ISafe::get('user_id');
         if(!$album_id){
-            showError(lang('pls_sel_album'));
+			$albums_list = Album_Category::get_flat_category();
+			$this->albums_list = $albums_list;
+			$this->act = $type;
+			$this->album_id = $album_id;
+			$this->redirect('index',false);
+            Util::showMessage("请先选择相册！");
+			exit;
         }
 
         if($type == 'multi'){
-            need_login('ajax');
+            //更新相册数目
+			$photosDB = new IModel("photos");
+			$where = "album_id=".$album_id." and user_id=".$user_id;
+			$photosRows = $photosDB->getObj($where,"count(*) as num");
+			$arr['photos_num'] = $photosRows['num'];
+			$arr['up_time'] = time();
+			$albumDB = new IModel("albums"); 
+			$albumDB->setData($arr);
+			$albumDB->update("id=".$album_id);
+			
+			//设置封面
+			$where = "id=".$album_id." and user_id=".$user_id;
+			$info = $albumDB->getObj($where);
+			$where = "id=".$info['cover_id'];
+			$photo = $photosDB->getObj($where);
+			if(!empty($photo) && $photo['album_id']==$album_id){
+				
+			}else
+			{
+				$where = "album_id=".$album_id." and user_id=".$user_id;
+				$photo_info = $photosDB->getObj($where);
+				if(!empty($photo_info)){
+					$cover_info['cover_id'] = $photo_info['id'];
+					$where = "album_id=".$album_id." and user_id=".$user_id;
+					$data = array(
+					'is_cover'=>0
+					);
+					$photosDB->setData($data);
+					$photosDB->update($where);
+					$data = array(
+					'is_cover'=>1
+					);
+					$where = 'id='.intval($cover_info['cover_id']);
+					$photosDB->setData($data);
+					$photosDB->update($where);
+				}else{
+					$cover_info['cover_id'] = 0;
+				}
 
-            /*$files_count = intval($this->getPost('muilti_uploader_count'));
-            for($i=0;$i<$files_count;$i++){
-                $filename = $this->getPost("muilti_uploader_{$i}_tmpname");
-                $realname = $this->getPost("muilti_uploader_{$i}_name");
-                $purename = file_pure_name($filename);
-                $purerealname = file_pure_name($realname);
-                $photorow = $this->mdl_photo->get_photo_by_name_aid($album_id,$purename);
-                if($photorow){
-                    $this->mdl_photo->update($photorow['id'],array('name'=>$purerealname));
-                }
-            }
-            */
-            $this->mdl_album->update_photos_num($album_id);
-            $this->mdl_album->check_repare_cover($album_id);
-            
-            $gourl = site_link('photos','index',array('aid'=>$album_id));
-            form_ajax_success('box',lang('upload_photo_success'),null,1,$gourl);
+				$albumDB->setData($cover_info);
+				$albumDB->update("id=".$album_id);
+			}
+			$gourl = IUrl::creatUrl("albums/photos/album_id/{$album_id}");
+            Ui::form_ajax_success('box',"上传图片成功",null,1,$gourl);
         }else{
             need_login('page');
             
