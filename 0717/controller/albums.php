@@ -201,15 +201,13 @@ class Albums extends IController
 		$photosDB->pagesize = 8;
 		$photos = $photosDB->find();
 		$PageBarHtml = $photosDB->getPageBar();
-		/*
         if(!empty($photos)){
             foreach($photos as $k=>$v){
-				$img_url = IUrl::creatUrl("albums/photosview/id/$v['id']");
-                $img_thumb = '<a href="'.$img_url.'">
-                <img src="'.$v['thumb'].'" alt="'.$album_info['name'].'_'.$v['name'].'" /></a>';
+				$img_url = IUrl::creatUrl("albums/photosview/id/$v[id]");
+                $img_thumb = '<a href="'.$img_url.'"> <img src="'.$v['thumb'].'" alt="'.$album_info['name'].'_'.$v['name'].'" /></a>';
                 $photos[$k]['img_thumb'] = $img_thumb;
             }
-        }*/
+        }
 		$this->PageBarHtml = $PageBarHtml;
         $this->photos = $photos;
 		$this->album_id = $album_id;
