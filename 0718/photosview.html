@@ -6,6 +6,7 @@
       cursor: url("/views/default/skin/default/images/next.cur"), auto;
   }
 </style>
+{set:$next_id = $this->picture['next']['id'];$previous_id = $this->picture['previous']['id'];}
 <div id="bodywrap">
     <table class="layout">
         <tr>
@@ -45,16 +46,16 @@
     };
     ImgContol.ajax = '{url:/albums/photos_nav}';
 	{if:$this->picture['previous']}
-    ImgContol.prev = "{url:/albums/photosview/id/$this->picture[previous][id]}";
+    ImgContol.prev = "{url:/albums/photosview/id/$previous_id}";
 	{/if}
 	{if:$this->picture['next']}
-    ImgContol.next = "{url:/albums/photosview/id/$this->picture[next][id]}";
+    ImgContol.next = "{url:/albums/photosview/id/$next_id}";
 	{/if}
-    ImgContol.album_id = '{$this->info['album_id']}';
+    ImgContol.album_id = "{$this->info['album_id']}";
     ImgContol.last_rank = parseInt('{$this->last_rank}');
     ImgContol.current_rank = parseInt('{$this->current_rank}');
     //调整图片，填入目标图片原始宽度，原始高度，最大宽度和最大高度
-    ImgContol.resize_img(parseInt('{$this->info[width]}'),parseInt('{$this->info[height]}'),730,730);
+    ImgContol.resize_img(parseInt("{$this->info['width']}"),parseInt("{$this->info['height']}"),730,730);
     ImgContol.init();
 </script>
            
@@ -69,7 +70,7 @@
                         <ul>
                           <li>
                           {if:$this->picture['previous']}
-                          <a href="{url:/albums/photosview/id/$this->picture[previous][id]}#pic_block">
+                          <a href="{url:/albums/photosview/id/$previous_id}#pic_block">
                               <span class="thumbnail_container">
                                 <img src="{$this->picture['previous']['thumb']}" style="" />
                               </span>
@@ -82,7 +83,7 @@
                           </a>
                           {/if}
                           </li>
-                          <li><a class="current" href="{url:/albums/photosview/id/$this->info[id]}#pic_block">
+                          <li><a class="current" href="{url:/albums/photosview/id/$this->info['id']}#pic_block">
                               <span class="thumbnail_container">
                                 <img src="{$this->info['thumb']}" style="" />
                               </span>
@@ -90,9 +91,9 @@
                           </li>
                           <li>
                           {if:$this->picture['next']}
-                            <a href="{url:/albums/photosview/id/$this->picture[next][id]}#pic_block">
+                            <a href="{url:/albums/photosview/id/$next_id}#pic_block">
                               <span class="thumbnail_container">
-                                <img src="{$this->picture[next][thumb]}" style="" />
+                                <img src="{$this->picture['next']['thumb']}" style="" />
                               </span>
                             </a>
                           {else:}
@@ -106,7 +107,7 @@
                         </ul>
                         <div class="nav_ctl">
                           <span class="nav_ctl_prev"><a href="javascript:void(0)" onclick="ImgContol.nav_prev()">上一张</a></span>
-                          <span class="slideshow"><span class="i_slideshow sprite"></span> <a href="{url:/albums/photos_slide/aid/$this->info[album_id]}">幻灯浏览</a></span>
+                          <span class="slideshow"><span class="i_slideshow sprite"></span> <a href="{url:/albums/photos_slide/aid/$this->info['album_id']}">幻灯浏览</a></span>
                           <span class="nav_ctl_next"><a href="javascript:void(0)" onclick="ImgContol.nav_next()">下一张</a></span>
                           <div class="clear"></div>
                         </div>
@@ -124,10 +125,10 @@
                     <div id="photo_modify_icons">
 						<ul>
 						  <li><a href="javascript:void(0)" onclick="Mui.box.show('{url:/albums/photos_confirm_delete/id/$this->info[id]}',true);" title="删除"><span class="i_littletrash sprite"></span>删除</a></li>
-						  <li><a href="javascript:void(0)" onclick="Mui.box.show('{url:/albums/photos_update_cover/pic_id/$this->info[id]}');" title="设置封面"><span class="i_cover sprite"></span> 设置封面</a></li>
-						  <li><a href="javascript:void(0)" onclick="Mui.box.show('{url:/albums/photos_rotate/id/$this->info[id]}',true);" title="旋转"><span class="i_rotate sprite"></span>旋转</a></li>
-						  <li><a href="javascript:void(0)" onclick="Mui.box.show('{url:/albums/photos_move/id/$this->info[id]}',true);" title="移动照片"><span class="i_moveto sprite"></span>至照片</a></li>
-						  <li><a href="javascript:void(0)" onclick="Mui.box.show('{url:/albums/photos_reupload/id/$this->info[id]}',true);" title="重新上传"><span class="i_reupload sprite"></span>重新上传</a></li>
+						  <li><a href="javascript:void(0)" onclick="Mui.box.show('{url:/albums/photos_update_cover/pic_id/$this->info['id']}');" title="设置封面"><span class="i_cover sprite"></span> 设置封面</a></li>
+						  <li><a href="javascript:void(0)" onclick="Mui.box.show('{url:/albums/photos_rotate/id/$this->info['id']}',true);" title="旋转"><span class="i_rotate sprite"></span>旋转</a></li>
+						  <li><a href="javascript:void(0)" onclick="Mui.box.show('{url:/albums/photos_move/id/$this->info['id']}',true);" title="移动照片"><span class="i_moveto sprite"></span>至照片</a></li>
+						  <li><a href="javascript:void(0)" onclick="Mui.box.show('{url:/albums/photos_reupload/id/$this->info['id']}',true);" title="重新上传"><span class="i_reupload sprite"></span>重新上传</a></li>
 						  {$this->photo_col_ctl}
 						</ul>
                       <div class="clear"></div>
