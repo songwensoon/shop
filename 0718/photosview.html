@@ -1,0 +1,165 @@
+<style type="text/css">
+  span.pre_cur{
+      cursor: url("/views/default/skin/default/images/pre.cur"), auto;
+  }
+  span.next_cur{
+      cursor: url("/views/default/skin/default/images/next.cur"), auto;
+  }
+</style>
+<div id="bodywrap">
+    <table class="layout">
+        <tr>
+            <td class="left">
+                <div class="mainbody">
+                    <div class="innercol" id="pic_block">
+                        <div id="photo_body">
+                            {$this->photo_body_append}
+                            <span id="imgarea">
+                                <img class="photo" alt="{$this->info['name']}" src="{$this->info['path']}" />
+                            </span>
+                        </div>
+                        <div id="photo_infos">
+                            
+                            <div class="photo_main">
+                                <h1>
+                                    <div class="inline_edit" title="点击修改" onclick="Madmin.inline_edit(this,'{link ctl=photos act=modify_name_inline id=$info['id']}')">{$this->info['name']} <span class="i_editinfo sprite"></span>
+                                    </div>
+                                </h1>
+                                <div class="desc">
+                                    <div class="inline_edit" title="{lang click_editable}" onclick="Madmin.inline_edit(this,'{url:/albums/modify_desc_inline/id/$this->info[id]}')">{if:!$this->info['desc']}
+                                        还没有描述，为照片添加描述吧！
+                                        {else:}
+                                        {$this->info['desc']}
+                                        {/if} <span class="i_editinfo sprite"></span>
+                                    </div>
+                                  
+                                </div>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+<script type='text/javascript' src='{theme:javascript/photo.js}'></script>
+<script type="text/javascript">
+    ImgContol.lang = {
+      next_photo:'下一张',
+      prev_photo:'上一张'
+    };
+    ImgContol.ajax = '{url:/albums/photos_nav}';
+	{if:$this->picture['previous']}
+    ImgContol.prev = "{url:/albums/photosview/id/$this->picture[previous][id]}";
+	{/if}
+	{if:$this->picture['next']}
+    ImgContol.next = "{url:/albums/photosview/id/$this->picture[next][id]}";
+	{/if}
+    ImgContol.album_id = '{$this->info['album_id']}';
+    ImgContol.last_rank = parseInt('{$this->last_rank}');
+    ImgContol.current_rank = parseInt('{$this->current_rank}');
+    //调整图片，填入目标图片原始宽度，原始高度，最大宽度和最大高度
+    ImgContol.resize_img(parseInt('{$this->info[width]}'),parseInt('{$this->info[height]}'),730,730);
+    ImgContol.init();
+</script>
+           
+                    </div>
+                </div>
+            </td>
+             <td class="right">
+                <div class="sidebar">
+                    <div class="pic_nav">
+                        <h2 class="titbg">{$this->album_info['name']} </h2>
+                        <div class="pic_nav_body">
+                        <ul>
+                          <li>
+                          {if:$this->picture['previous']}
+                          <a href="{url:/albums/photosview/id/$this->picture[previous][id]}#pic_block">
+                              <span class="thumbnail_container">
+                                <img src="{$this->picture['previous']['thumb']}" style="" />
+                              </span>
+                            </a>
+                          {else:}
+                          <a href="javascript:void(0)" class="non">
+                              <span class="thumbnail_container">
+                                这是首张
+                              </span>
+                          </a>
+                          {/if}
+                          </li>
+                          <li><a class="current" href="{url:/albums/photosview/id/$this->info[id]}#pic_block">
+                              <span class="thumbnail_container">
+                                <img src="{$this->info['thumb']}" style="" />
+                              </span>
+                            </a>
+                          </li>
+                          <li>
+                          {if:$this->picture['next']}
+                            <a href="{url:/albums/photosview/id/$this->picture[next][id]}#pic_block">
+                              <span class="thumbnail_container">
+                                <img src="{$this->picture[next][thumb]}" style="" />
+                              </span>
+                            </a>
+                          {else:}
+                            <a href="javascript:void(0)" class="non">
+                                <span class="thumbnail_container">
+                                  这是末张
+                                </span>
+                            </a>
+                          {/if}
+                          </li>
+                        </ul>
+                        <div class="nav_ctl">
+                          <span class="nav_ctl_prev"><a href="javascript:void(0)" onclick="ImgContol.nav_prev()">上一张</a></span>
+                          <span class="slideshow"><span class="i_slideshow sprite"></span> <a href="{url:/albums/photos_slide/aid/$this->info[album_id]}">幻灯浏览</a></span>
+                          <span class="nav_ctl_next"><a href="javascript:void(0)" onclick="ImgContol.nav_next()">下一张</a></span>
+                          <div class="clear"></div>
+                        </div>
+                        </div>
+                    </div>
+                    <!-- todo -->
+                    <div class="mb10 mt15 tinfo">
+                        <p>上传于: {echo:date('Y-m-d',$this->info['create_time'])}</p>
+                        {if:$this->info['taken_time']}
+                        <p>拍摄于: {echo:date('Y-m-d',$this->info['taken_time'])}</p>
+                        {/if}
+                        <p>图片尺寸: {$this->info['width']}×{$this->info['height']} <a href="{$this->info['path']}" target="_blank">查看原图</a></p>
+                        <p>被查看了{$this->info['hits']}次</p>
+                    </div>
+                    <div id="photo_modify_icons">
+						<ul>
+						  <li><a href="javascript:void(0)" onclick="Mui.box.show('{url:/albums/photos_confirm_delete/id/$this->info[id]}',true);" title="删除"><span class="i_littletrash sprite"></span>删除</a></li>
+						  <li><a href="javascript:void(0)" onclick="Mui.box.show('{url:/albums/photos_update_cover/pic_id/$this->info[id]}');" title="设置封面"><span class="i_cover sprite"></span> 设置封面</a></li>
+						  <li><a href="javascript:void(0)" onclick="Mui.box.show('{url:/albums/photos_rotate/id/$this->info[id]}',true);" title="旋转"><span class="i_rotate sprite"></span>旋转</a></li>
+						  <li><a href="javascript:void(0)" onclick="Mui.box.show('{url:/albums/photos_move/id/$this->info[id]}',true);" title="移动照片"><span class="i_moveto sprite"></span>至照片</a></li>
+						  <li><a href="javascript:void(0)" onclick="Mui.box.show('{url:/albums/photos_reupload/id/$this->info[id]}',true);" title="重新上传"><span class="i_reupload sprite"></span>重新上传</a></li>
+						  {$this->photo_col_ctl}
+						</ul>
+                      <div class="clear"></div>
+                    </div>
+                    <div class="mb10 ml10">
+                    <!-- JiaThis Button BEGIN -->
+                    <div id="ckepop">
+                      <a class="jiathis_button_tsina"></a>
+                      <a class="jiathis_button_tqq"></a>
+                      <a class="jiathis_button_qzone"></a>
+                      <a class="jiathis_button_renren"></a>
+                      <a class="jiathis_button_kaixin001"></a>
+                      <a class="jiathis_button_t163"></a>
+                      <a class="jiathis_button_tsohu"></a>
+                      <a class="jiathis_button_meilishuo"></a>
+                      <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+                    </div>
+                    <!-- JiaThis Button END -->
+                    </div>
+                    {$this->photo_view_sidebar}
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+<!-- JiaThis JS BEGIN -->
+<script type="text/javascript" >
+var jiathis_config={
+  title:"{$this->sharetitle}",
+  pic:"{$this->info['path']}",
+  hideMore:false
+}
+</script>
+<script type="text/javascript" src="http://v2.jiathis.com/code_mini/jia.js" charset="utf-8"></script>
+<!-- JiaThis JS END -->
